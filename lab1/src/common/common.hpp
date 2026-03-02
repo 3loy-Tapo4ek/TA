@@ -8,8 +8,12 @@ enum class TypeId
     TYPE,
     NAME,
     LIT,
-    SIGN,
-    ASSIGN
+    PLUS,
+    MINUS,
+    MULTIPLY,
+    DIV,
+    ASSIGN,
+    SPACE
 };
 
 struct TokenType
@@ -18,13 +22,17 @@ struct TokenType
     std::string regex_;
 };
 
-std::map<TypeId, TokenType> tokenTypeList = 
+const static std::map<TypeId, TokenType> tokenTypeList = 
 {
-    {TypeId::TYPE, TokenType{"TYPE", "\\b(int|short|long)\\b"}},
-    {TypeId::NAME, TokenType{"NAME", "[a-z]*"}},
-    {TypeId::LIT, TokenType{"LIT", "[0-9]*"}},
-    {TypeId::SIGN, TokenType{"SIGN", "{+,-,*,/}"}},
-    {TypeId::ASSIGN, TokenType{"ASSIGN", ":="}}
+    {TypeId::TYPE, TokenType{"TYPE", "(int|short|long)"}},
+    {TypeId::NAME, TokenType{"NAME", "[a-z]+"}},
+    {TypeId::LIT, TokenType{"LIT", "(\\d+)"}},
+    {TypeId::PLUS, TokenType{"PLUS", "\\+"}},
+    {TypeId::MINUS, TokenType{"MINUS", "\\-"}},
+    {TypeId::MULTIPLY, TokenType{"MULTIPLY", "\\*"}},
+    {TypeId::DIV, TokenType{"DIV", "\\/"}},
+    {TypeId::ASSIGN, TokenType{"ASSIGN", "(:=)"}},
+    {TypeId::SPACE, TokenType{"SPACE", "(\\s)"}}
 };
 
 
