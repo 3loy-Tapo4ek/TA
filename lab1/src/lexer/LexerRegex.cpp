@@ -26,8 +26,10 @@ bool LexerRegex::nextToken()
             Token correct_token{token.second, matches[0].str(), pose_};
             pose_ += matches[0].str().length();
 
-            tokens_.push_back(correct_token);
-
+            if (correct_token.type_.name_ != "SPACE")
+            {
+                tokens_.push_back(correct_token);
+            }
             return true;
         }
     }

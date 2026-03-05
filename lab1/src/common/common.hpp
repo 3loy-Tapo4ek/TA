@@ -13,7 +13,8 @@ enum class TypeId
     MULTIPLY,
     DIV,
     ASSIGN,
-    SPACE
+    SPACE,
+    DELIM
 };
 
 struct TokenType
@@ -32,7 +33,8 @@ const static std::map<TypeId, TokenType> tokenTypeList =
     {TypeId::MULTIPLY, TokenType{"MULTIPLY", "\\*"}},
     {TypeId::DIV, TokenType{"DIV", "\\/"}},
     {TypeId::ASSIGN, TokenType{"ASSIGN", "(:=)"}},
-    {TypeId::SPACE, TokenType{"SPACE", "(\\s)"}}
+    {TypeId::SPACE, TokenType{"SPACE", "([ \\t]+)"}},
+    {TypeId::DELIM, TokenType{"DELIM", "(\\n)"}}
 };
 
 
