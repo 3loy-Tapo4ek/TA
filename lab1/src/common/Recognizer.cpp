@@ -9,7 +9,7 @@ std::vector<std::pair<bool, std::string>> Recognizer::TakeStatistics()
     
     for (auto& it : tokens_)
     {
-        output_string += it.name_;
+        output_string += it.name_ + " ";
         
         if (current_pose == 0 && IsType(it)) current_pose++;
         else if (current_pose == 1 && IsName(it)) current_pose++;

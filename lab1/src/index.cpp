@@ -2,14 +2,24 @@
 #include "lexer/Lexer.hpp"
 #include "common/Recognizer.hpp"
 
+#include <fstream>
+#include <sstream>
+
 int main()
 {
-    std::string code =
-    "long var := 10313 + 1\n"
-    "int dasha := 10 +\n"
-    "int timur := 142 / 2\n"
-    "long vova := 228 * 555";
+    std::string filename = "../lab1/src/code.txt"; 
+    std::ifstream file(filename);
 
+    if (!file.is_open())
+    {
+        std::cerr << "Bad file: " << filename << std::endl;
+        return 1;
+    }
+
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    std::string code = buffer.str();
+    file.close();
     ILexer* lexer = new LexerRegex(code);
   
     IRecognizer* recognizer = new Recognizer(lexer->Run());
