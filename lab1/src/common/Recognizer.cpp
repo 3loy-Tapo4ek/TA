@@ -39,12 +39,12 @@ std::vector<std::pair<bool, std::string>> Recognizer::TakeStatistics()
     return output;
 }
 
-bool Recognizer::IsType(const auto& token) const { return token.type_.name_ == "TYPE"; }
-bool Recognizer::IsName(const auto& token) const { return token.type_.name_ == "NAME"; }
-bool Recognizer::IsAssign(const auto& token) const { return token.type_.name_ == "ASSIGN"; }
-bool Recognizer::IsLit(const auto& token) const { return token.type_.name_ == "LIT"; }
-bool Recognizer::IsOperator(const auto& token) const { 
+bool Recognizer::IsType(const Token& token) const { return token.type_.name_ == "TYPE"; }
+bool Recognizer::IsName(const Token& token) const { return token.type_.name_ == "NAME"; }
+bool Recognizer::IsAssign(const Token& token) const { return token.type_.name_ == "ASSIGN"; }
+bool Recognizer::IsLit(const Token& token) const { return token.type_.name_ == "LIT"; }
+bool Recognizer::IsOperator(const Token& token) const { 
         return token.type_.name_ == "PLUS" || token.type_.name_ == "MINUS" || 
                token.type_.name_ == "MULTIPLY" || token.type_.name_ == "DIV"; 
-    }
-bool Recognizer::IsDelim(const auto& token) const { return token.type_.name_ == "DELIM"; }
+            }
+bool Recognizer::IsDelim(const Token& token) const { return token.type_.name_ == "DELIM"; }

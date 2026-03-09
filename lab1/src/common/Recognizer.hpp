@@ -5,13 +5,20 @@
 #include <vector>
 
 #include "Token.hpp"
-
+#include "../smc/RecognizerSMC_sm.h"
 
 
 class IRecognizer
 {
 public:
     virtual std::vector<std::pair<bool, std::string>> TakeStatistics() = 0;
+
+    virtual bool IsType(const Token& token) const = 0;
+    virtual bool IsName(const Token& token) const = 0;
+    virtual bool IsAssign(const Token& token) const = 0;
+    virtual bool IsLit(const Token& token) const = 0;
+    virtual bool IsOperator(const Token& token) const = 0;
+    virtual bool IsDelim(const Token& token) const = 0;
 
     virtual ~IRecognizer() {};
 };
@@ -22,16 +29,44 @@ private:
     std::vector<Token> tokens_;
     size_t pose_ = 0;
 
-    bool IsType(const auto& token) const;
-    bool IsName(const auto& token) const;
-    bool IsAssign(const auto& token) const;
-    bool IsLit(const auto& token) const;
-    bool IsOperator(const auto& token) const;
-    bool IsDelim(const auto& token) const;
+    bool IsType(const Token& token) const override;
+    bool IsName(const Token& token) const override;
+    bool IsAssign(const Token& token) const override;
+    bool IsLit(const Token& token) const override;
+    bool IsOperator(const Token& token) const override;
+    bool IsDelim(const Token& token) const override;
 public:
     Recognizer(std::vector<Token> tokens) : tokens_(tokens) {}
 
     std::vector<std::pair<bool, std::string>> TakeStatistics() override;
 
     ~Recognizer() override = default;
+};
+
+class RecognizerSMC : public IRecognizer
+{
+private:
+    RecognizerSMCContext context_;
+    
+    size_t pose_ = 0;
+    std::vector<Token> tokens_;
+
+public:
+    RecognizerSMC(std::vector<Token> tokens) : context_(*this), tokens_(tokens) 
+    {
+        context_.enterStartState();
+    }
+
+    bool IsType(const Token& token) const override;
+    bool IsName(const Token& token) const override;
+    bool IsAssign(const Token& token) const override;
+    bool IsLit(const Token& token) const override;
+    bool IsOperator(const Token& token) const override;
+    bool IsDelim(const Token& token) const override;
+
+    void pose_increment();
+    void alarm();
+    void pose_restart();
+
+    ~RecognizerSMC() override = default;
 };

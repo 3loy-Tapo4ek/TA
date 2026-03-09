@@ -1,2 +1,7 @@
 .vscode/
 build/
+*.png
+*_sm.cpp
+*_sm.h
+*_sm.dot
+statemap.h

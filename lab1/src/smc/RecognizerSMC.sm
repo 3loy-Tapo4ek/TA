@@ -1,0 +1,124 @@
+%class RecognizerSMC
+
+%header "../common/Recognizer.hpp"
+%include "../common/Token.hpp"
+
+%start RecognizerMap::Pose0
+
+%map RecognizerMap
+
+%%
+
+Pose0
+{
+    process(token: const Token&)
+    [ctxt.IsType(token)]
+    Pose1
+    {
+        pose_increment();
+    }
+
+    process(token: const Token&)
+    nil
+    {
+        alarm();
+    }
+}
+
+Pose1
+{
+    process(token: const Token&)
+    [ctxt.IsName(token)]
+    Pose2
+    {
+        pose_increment();
+    }
+
+    process(token: const Token&)
+    nil
+    {
+        alarm();
+    }
+}
+
+Pose2
+{
+    process(token: const Token&)
+    [ctxt.IsAssign(token)]
+    Pose3
+    {
+        pose_increment();
+    }
+
+    process(token: const Token&)
+    nil
+    {
+        alarm();
+    }
+}
+
+Pose3
+{
+    process(token: const Token&)
+    [ctxt.IsLit(token)]
+    Pose4
+    {
+        pose_increment();
+    }
+
+    process(token: const Token&)
+    nil
+    {
+        alarm();
+    }
+}
+
+Pose4
+{
+    process(token: const Token&)
+    [ctxt.IsOperator(token)]
+    Pose5
+    {
+        pose_increment();
+    }
+
+    process(token: const Token&)
+    nil
+    {
+        alarm();
+    }
+}
+
+Pose5
+{
+    process(token: const Token&)
+    [ctxt.IsLit(token)]
+    Pose6
+    {
+        pose_increment();
+    }
+
+    process(token: const Token&)
+    nil
+    {
+        alarm();
+    }
+}
+
+Pose6
+{
+    process(token: const Token&)
+    [ctxt.IsType(token)]
+    Pose0
+    {
+        pose_restart();
+    }
+
+    process(token: const Token&)
+    nil
+    {
+        alarm();
+    }
+}
+
+%%

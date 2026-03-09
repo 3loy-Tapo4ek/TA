@@ -21,6 +21,14 @@ int main()
     std::string code = buffer.str();
     file.close();
     ILexer* lexer = new LexerRegex(code);
+
+    // for (auto& it : lexer->Run())
+    // {
+    //     std::cout << "Token:" << "\n"
+    //     << "'"<< it.name_ << "'"<< "\n"
+    //     << it.type_.name_ << "\n"
+    //     << std::endl;
+    // }
   
     IRecognizer* recognizer = new Recognizer(lexer->Run());
 
