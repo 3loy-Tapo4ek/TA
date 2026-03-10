@@ -31,5 +31,10 @@ bool LexerRegex::nextToken()
         }
     }
 
+        std::cout << "Lexer error: Unknown token at pos " << pose_ 
+              << ". Character: '" << code_[pose_] << "'" 
+              << ". Remaining code: \"" << code_.substr(pose_) << "\"" << std::endl;
+
+
     return false;
 };

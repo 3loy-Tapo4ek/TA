@@ -20,21 +20,25 @@ int main()
     buffer << file.rdbuf();
     std::string code = buffer.str();
     file.close();
+
+    std::string code2 =
+    "chae var := 5 + 1\n"
+    "int var := 5 + 2";
     ILexer* lexer = new LexerRegex(code);
 
-    // for (auto& it : lexer->Run())
-    // {
-    //     std::cout << "Token:" << "\n"
-    //     << "'"<< it.name_ << "'"<< "\n"
-    //     << it.type_.name_ << "\n"
-    //     << std::endl;
-    // }
+     for (auto& it : lexer->Run())
+     {
+         std::cout << "Token:" << "\n"
+         << "'"<< it.name_ << "'"<< "\n"
+         << it.type_.name_ << "\n"
+         << std::endl;
+     }
   
-    IRecognizer* recognizer = new Recognizer(lexer->Run());
+    IRecognizer* recognizer = new RecognizerSMC(lexer->Run());
 
     for (auto& it : recognizer->TakeStatistics())
     {
-        std::cout << it.first << " <---> " << it.second << std::endl;
+        std::cout << it.first << " <----> "<< it.second << std::endl;
     }
 
     delete recognizer;

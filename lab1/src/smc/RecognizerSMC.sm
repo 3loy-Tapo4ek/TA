@@ -11,114 +11,135 @@
 
 Pose0
 {
-    process(token: const Token&)
+    process(token: const Token&, stats: Stats&)
     [ctxt.IsType(token)]
     Pose1
     {
-        pose_increment();
+        pose_increment(token, stats);
     }
 
-    process(token: const Token&)
-    nil
+    process(token: const Token&, stats: Stats&)
+    [ctxt.IsDelim(token)]
+    nil {}
+
+    process(token: const Token&, stats: Stats&)
+    Error
     {
-        alarm();
+        alarm(token, stats);
     }
 }
 
 Pose1
 {
-    process(token: const Token&)
+    process(token: const Token&, stats: Stats&)
     [ctxt.IsName(token)]
     Pose2
     {
-        pose_increment();
+        pose_increment(token, stats);
     }
 
-    process(token: const Token&)
-    nil
+    process(token: const Token&, stats: Stats&)
+    Error
     {
-        alarm();
+        alarm(token, stats);
     }
 }
 
 Pose2
 {
-    process(token: const Token&)
+    process(token: const Token&, stats: Stats&)
     [ctxt.IsAssign(token)]
     Pose3
     {
-        pose_increment();
+        pose_increment(token, stats);
     }
 
-    process(token: const Token&)
-    nil
+    process(token: const Token&, stats: Stats&)
+    Error
     {
-        alarm();
+        alarm(token, stats);
     }
 }
 
 Pose3
 {
-    process(token: const Token&)
+    process(token: const Token&, stats: Stats&)
     [ctxt.IsLit(token)]
     Pose4
     {
-        pose_increment();
+        pose_increment(token, stats);
     }
 
-    process(token: const Token&)
-    nil
+    process(token: const Token&, stats: Stats&)
+    Error
     {
-        alarm();
+        alarm(token, stats);
     }
 }
 
 Pose4
 {
-    process(token: const Token&)
+    process(token: const Token&, stats: Stats&)
     [ctxt.IsOperator(token)]
     Pose5
     {
-        pose_increment();
+        pose_increment(token, stats);
     }
 
-    process(token: const Token&)
-    nil
+    process(token: const Token&, stats: Stats&)
+    Error
     {
-        alarm();
+        alarm(token, stats);
     }
 }
 
 Pose5
 {
-    process(token: const Token&)
+    process(token: const Token&, stats: Stats&)
     [ctxt.IsLit(token)]
     Pose6
     {
-        pose_increment();
+        pose_increment(token, stats);
     }
 
-    process(token: const Token&)
-    nil
+    process(token: const Token&, stats: Stats&)
+    Error
     {
-        alarm();
+        alarm(token, stats);
     }
 }
 
 Pose6
 {
-    process(token: const Token&)
-    [ctxt.IsType(token)]
+    process(token: const Token&, stats: Stats&)
+    [ctxt.IsDelim(token)]
     Pose0
     {
-        pose_restart();
+        pose_restart(token, stats);
     }
 
-    process(token: const Token&)
-    nil
+    process(token: const Token&, stats: Stats&)
+    Error
     {
-        alarm();
+        alarm(token, stats);
     }
+}
+
+Error
+{
+    process(token: const Token&, stats: Stats&)
+    [ctxt.IsDelim(token)]
+    Pose0 {}
+
+    process(token: const Token&, stats: Stats&)
+    [ ctxt.IsType(token) ]
+    Pose1 
+    {
+        restart_from_error(token, stats);
+    }
+
+    process(token: const Token&, stats: Stats&)
+    nil {}
 }
 
 %%

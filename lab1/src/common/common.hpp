@@ -37,4 +37,8 @@ const static std::map<TypeId, TokenType> tokenTypeList =
     {TypeId::DELIM, TokenType{"DELIM", "(\\n)"}}
 };
 
-
+struct Stats
+{
+    std::string buffer_;
+    std::vector<std::pair<bool, std::string>> output_;
+};

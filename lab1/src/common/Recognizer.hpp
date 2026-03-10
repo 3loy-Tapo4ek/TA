@@ -52,10 +52,7 @@ private:
     std::vector<Token> tokens_;
 
 public:
-    RecognizerSMC(std::vector<Token> tokens) : context_(*this), tokens_(tokens) 
-    {
-        context_.enterStartState();
-    }
+    RecognizerSMC(std::vector<Token> tokens) : context_(*this), tokens_(tokens) {}
 
     bool IsType(const Token& token) const override;
     bool IsName(const Token& token) const override;
@@ -64,9 +61,13 @@ public:
     bool IsOperator(const Token& token) const override;
     bool IsDelim(const Token& token) const override;
 
-    void pose_increment();
-    void alarm();
-    void pose_restart();
+    std::vector<std::pair<bool, std::string>> TakeStatistics() override;
+
+
+    void pose_increment(const Token& token, Stats& stats);
+    void alarm(const Token& token, Stats& stats);
+    void pose_restart(const Token& token, Stats& stats);
+    void restart_from_error(const Token& token, Stats& stats);
 
     ~RecognizerSMC() override = default;
 };

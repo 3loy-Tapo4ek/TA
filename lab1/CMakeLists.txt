@@ -10,6 +10,8 @@ set(SOURCES
     src/index.cpp
     src/common/Recognizer.cpp
     src/lexer/LexerRegex.cpp
+    src/common/RecognizerSMC.cpp
+    src/smc/RecognizerSMC_sm.cpp
 )
 
 # Создаём исполняемый файл (имя совпадает с именем проекта)
@@ -20,4 +22,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     src                # чтобы писать #include "common/Recognizer.hpp"
     src/common         # если в Recognizer.cpp используется #include "Token.hpp"
     src/lexer          # аналогично для lexer
+    src/smc
 )
