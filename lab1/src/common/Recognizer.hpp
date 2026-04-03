@@ -7,7 +7,6 @@
 #include "Token.hpp"
 #include "../smc/RecognizerSMC_sm.h"
 
-
 class IRecognizer
 {
 public:
@@ -26,8 +25,7 @@ public:
 class Recognizer : public IRecognizer
 {
 private:
-    std::vector<Token> tokens_;
-    size_t pose_ = 0;
+    std::string source_;
 
     bool IsType(const Token& token) const override;
     bool IsName(const Token& token) const override;
@@ -35,8 +33,9 @@ private:
     bool IsLit(const Token& token) const override;
     bool IsOperator(const Token& token) const override;
     bool IsDelim(const Token& token) const override;
+
 public:
-    Recognizer(std::vector<Token> tokens) : tokens_(tokens) {}
+    explicit Recognizer(std::string source) : source_(std::move(source)) {}
 
     std::vector<std::pair<bool, std::string>> TakeStatistics() override;
 
@@ -70,4 +69,27 @@ public:
     void restart_from_error(const Token& token, Stats& stats);
 
     ~RecognizerSMC() override = default;
+};
+
+class RecognizerFlex : public IRecognizer
+{
+private:
+    std::vector<Token> tokens_;
+
+    void LexWithFlex(const std::string& source);
+
+    bool IsType(const Token& token) const override;
+    bool IsName(const Token& token) const override;
+    bool IsAssign(const Token& token) const override;
+    bool IsLit(const Token& token) const override;
+    bool IsOperator(const Token& token) const override;
+    bool IsDelim(const Token& token) const override;
+
+public:
+    RecognizerFlex(const std::string& source);
+
+
+    std::vector<std::pair<bool, std::string>> TakeStatistics() override;
+
+    ~RecognizerFlex() override = default;
 };
