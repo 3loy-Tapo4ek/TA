@@ -5,7 +5,7 @@
 
 namespace
 {
-const char* kLinePattern = R"(^\s*(int|short|long)\s+[a-z]+\s*:=\s*\d+\s*[-+*/]\s*\d+\s*$)";
+const std::string kLinePattern = R"(^\s*(int|short|long)?\s+[a-z][a-z0-9]*\s*:=\s*\d+\s*[-+*/]\s*\d+\s*$)";
 }
 
 std::vector<std::pair<bool, std::string>> Recognizer::TakeStatistics()
@@ -17,9 +17,6 @@ std::vector<std::pair<bool, std::string>> Recognizer::TakeStatistics()
 
     while (std::getline(in, line))
     {
-        if (!line.empty() && line.back() == '\r')
-            line.pop_back();
-
         std::string display = line;
         if (!display.empty() && display.back() != ' ')
             display += ' ';

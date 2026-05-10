@@ -34,7 +34,6 @@ static void emit_token(const char* typename_, const char* text, int len)
 
 %%
 
-[ \t]+                  { flex_pos += static_cast<std::size_t>(yyleng); }
 
 \n                      { emit_token("DELIM", yytext, yyleng); }
 
@@ -54,6 +53,7 @@ static void emit_token(const char* typename_, const char* text, int len)
 
 [a-z]+                  { emit_token("NAME", yytext, yyleng); }
 
+[ \t]+                  { flex_pos += static_cast<std::size_t>(yyleng); }
 .                       {
     std::cerr << "Lexer error: Unknown token at pos " << flex_pos
               << ". Character: '" << yytext[0] << "'" << std::endl;

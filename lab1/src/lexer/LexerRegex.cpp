@@ -9,7 +9,7 @@ static std::vector<std::pair<TokenType, std::regex>> get_compiled_regexes() {
         for (const auto& token : tokenTypeList) {
             compiled.push_back({token.second, std::regex(token.second.regex_)});
         }
-    }
+    }    
     return compiled;
 }
 
