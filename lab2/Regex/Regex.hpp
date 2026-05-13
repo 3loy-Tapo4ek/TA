@@ -28,6 +28,9 @@ public:
     // Перегрузка 2: С доступом к группам (возвращает объекты RegexMatch)
     std::vector<RegexMatch> findall(const std::string& text, WithGroups) const;
 
+    const NFA& getNFA() const { return *nfa_; }
+    const DFA& getDFA() const { return *dfa_; }
+
 private:
     std::unique_ptr<NFA> nfa_;
     std::unique_ptr<DFA> dfa_;

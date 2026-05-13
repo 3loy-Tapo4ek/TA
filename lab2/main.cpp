@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Regex.hpp"
+#include "GraphVisualizer.hpp"
 
 int main() {
     try {
@@ -23,6 +24,9 @@ int main() {
 
         // 3. Восстановление (K-пути)
         std::cout << "Restored Regex: " << re.toRegexString() << std::endl;
+
+        regex_engine::GraphVisualizer::exportNFA(re.getNFA(), "nfa.dot");
+        regex_engine::GraphVisualizer::exportDFA(re.getDFA(), "dfa.dot");
 
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;

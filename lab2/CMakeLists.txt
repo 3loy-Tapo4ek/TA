@@ -31,6 +31,7 @@ set(LIB_SOURCES
         Regex/Regex.cpp
         Regex/RegexMatch.cpp
         Lexer/FlexLexerAdapter.cpp
+        Visualizer/GraphVisualizer.cpp
         ${FLEX_MyLexer_OUTPUTS}
 )
 
@@ -47,6 +48,7 @@ target_include_directories(regex_lib PUBLIC
         "${CMAKE_SOURCE_DIR}/Parser/"
         "${CMAKE_SOURCE_DIR}/Regex/"
         "${CMAKE_SOURCE_DIR}/Token/"
+        "${CMAKE_SOURCE_DIR}/Visualizer/"
         "${CMAKE_CURRENT_BINARY_DIR}/"
 )
 
