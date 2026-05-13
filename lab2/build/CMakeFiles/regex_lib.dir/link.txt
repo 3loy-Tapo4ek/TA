@@ -1,0 +1,2 @@
+/usr/bin/ar qc libregex_lib.a CMakeFiles/regex_lib.dir/AST/AST.cpp.o CMakeFiles/regex_lib.dir/Graph/NFA.cpp.o CMakeFiles/regex_lib.dir/Graph/NFABuilder.cpp.o CMakeFiles/regex_lib.dir/K_path/RegexRestorer.cpp.o CMakeFiles/regex_lib.dir/Minimisation/DFA.cpp.o CMakeFiles/regex_lib.dir/Minimisation/DFABuilder.cpp.o CMakeFiles/regex_lib.dir/Parser/Parser.cpp.o CMakeFiles/regex_lib.dir/Regex/Regex.cpp.o CMakeFiles/regex_lib.dir/Regex/RegexMatch.cpp.o CMakeFiles/regex_lib.dir/Lexer/FlexLexerAdapter.cpp.o CMakeFiles/regex_lib.dir/lexer.cpp.o
+/usr/bin/ranlib libregex_lib.a

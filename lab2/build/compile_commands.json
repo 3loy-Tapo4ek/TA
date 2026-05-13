@@ -1,0 +1,74 @@
+[
+{
+  "directory": "/home/daniil/TA/lab2/build",
+  "command": "/usr/bin/c++  -I/home/daniil/TA/lab2/AST -I/home/daniil/TA/lab2/Graph -I/home/daniil/TA/lab2/K_path -I/home/daniil/TA/lab2/Lexer -I/home/daniil/TA/lab2/Minimisation -I/home/daniil/TA/lab2/Parser -I/home/daniil/TA/lab2/Regex -I/home/daniil/TA/lab2/Token -I/home/daniil/TA/lab2/build -std=gnu++20 -o CMakeFiles/regex_lib.dir/AST/AST.cpp.o -c /home/daniil/TA/lab2/AST/AST.cpp",
+  "file": "/home/daniil/TA/lab2/AST/AST.cpp",
+  "output": "CMakeFiles/regex_lib.dir/AST/AST.cpp.o"
+},
+{
+  "directory": "/home/daniil/TA/lab2/build",
+  "command": "/usr/bin/c++  -I/home/daniil/TA/lab2/AST -I/home/daniil/TA/lab2/Graph -I/home/daniil/TA/lab2/K_path -I/home/daniil/TA/lab2/Lexer -I/home/daniil/TA/lab2/Minimisation -I/home/daniil/TA/lab2/Parser -I/home/daniil/TA/lab2/Regex -I/home/daniil/TA/lab2/Token -I/home/daniil/TA/lab2/build -std=gnu++20 -o CMakeFiles/regex_lib.dir/Graph/NFA.cpp.o -c /home/daniil/TA/lab2/Graph/NFA.cpp",
+  "file": "/home/daniil/TA/lab2/Graph/NFA.cpp",
+  "output": "CMakeFiles/regex_lib.dir/Graph/NFA.cpp.o"
+},
+{
+  "directory": "/home/daniil/TA/lab2/build",
+  "command": "/usr/bin/c++  -I/home/daniil/TA/lab2/AST -I/home/daniil/TA/lab2/Graph -I/home/daniil/TA/lab2/K_path -I/home/daniil/TA/lab2/Lexer -I/home/daniil/TA/lab2/Minimisation -I/home/daniil/TA/lab2/Parser -I/home/daniil/TA/lab2/Regex -I/home/daniil/TA/lab2/Token -I/home/daniil/TA/lab2/build -std=gnu++20 -o CMakeFiles/regex_lib.dir/Graph/NFABuilder.cpp.o -c /home/daniil/TA/lab2/Graph/NFABuilder.cpp",
+  "file": "/home/daniil/TA/lab2/Graph/NFABuilder.cpp",
+  "output": "CMakeFiles/regex_lib.dir/Graph/NFABuilder.cpp.o"
+},
+{
+  "directory": "/home/daniil/TA/lab2/build",
+  "command": "/usr/bin/c++  -I/home/daniil/TA/lab2/AST -I/home/daniil/TA/lab2/Graph -I/home/daniil/TA/lab2/K_path -I/home/daniil/TA/lab2/Lexer -I/home/daniil/TA/lab2/Minimisation -I/home/daniil/TA/lab2/Parser -I/home/daniil/TA/lab2/Regex -I/home/daniil/TA/lab2/Token -I/home/daniil/TA/lab2/build -std=gnu++20 -o CMakeFiles/regex_lib.dir/K_path/RegexRestorer.cpp.o -c /home/daniil/TA/lab2/K_path/RegexRestorer.cpp",
+  "file": "/home/daniil/TA/lab2/K_path/RegexRestorer.cpp",
+  "output": "CMakeFiles/regex_lib.dir/K_path/RegexRestorer.cpp.o"
+},
+{
+  "directory": "/home/daniil/TA/lab2/build",
+  "command": "/usr/bin/c++  -I/home/daniil/TA/lab2/AST -I/home/daniil/TA/lab2/Graph -I/home/daniil/TA/lab2/K_path -I/home/daniil/TA/lab2/Lexer -I/home/daniil/TA/lab2/Minimisation -I/home/daniil/TA/lab2/Parser -I/home/daniil/TA/lab2/Regex -I/home/daniil/TA/lab2/Token -I/home/daniil/TA/lab2/build -std=gnu++20 -o CMakeFiles/regex_lib.dir/Minimisation/DFA.cpp.o -c /home/daniil/TA/lab2/Minimisation/DFA.cpp",
+  "file": "/home/daniil/TA/lab2/Minimisation/DFA.cpp",
+  "output": "CMakeFiles/regex_lib.dir/Minimisation/DFA.cpp.o"
+},
+{
+  "directory": "/home/daniil/TA/lab2/build",
+  "command": "/usr/bin/c++  -I/home/daniil/TA/lab2/AST -I/home/daniil/TA/lab2/Graph -I/home/daniil/TA/lab2/K_path -I/home/daniil/TA/lab2/Lexer -I/home/daniil/TA/lab2/Minimisation -I/home/daniil/TA/lab2/Parser -I/home/daniil/TA/lab2/Regex -I/home/daniil/TA/lab2/Token -I/home/daniil/TA/lab2/build -std=gnu++20 -o CMakeFiles/regex_lib.dir/Minimisation/DFABuilder.cpp.o -c /home/daniil/TA/lab2/Minimisation/DFABuilder.cpp",
+  "file": "/home/daniil/TA/lab2/Minimisation/DFABuilder.cpp",
+  "output": "CMakeFiles/regex_lib.dir/Minimisation/DFABuilder.cpp.o"
+},
+{
+  "directory": "/home/daniil/TA/lab2/build",
+  "command": "/usr/bin/c++  -I/home/daniil/TA/lab2/AST -I/home/daniil/TA/lab2/Graph -I/home/daniil/TA/lab2/K_path -I/home/daniil/TA/lab2/Lexer -I/home/daniil/TA/lab2/Minimisation -I/home/daniil/TA/lab2/Parser -I/home/daniil/TA/lab2/Regex -I/home/daniil/TA/lab2/Token -I/home/daniil/TA/lab2/build -std=gnu++20 -o CMakeFiles/regex_lib.dir/Parser/Parser.cpp.o -c /home/daniil/TA/lab2/Parser/Parser.cpp",
+  "file": "/home/daniil/TA/lab2/Parser/Parser.cpp",
+  "output": "CMakeFiles/regex_lib.dir/Parser/Parser.cpp.o"
+},
+{
+  "directory": "/home/daniil/TA/lab2/build",
+  "command": "/usr/bin/c++  -I/home/daniil/TA/lab2/AST -I/home/daniil/TA/lab2/Graph -I/home/daniil/TA/lab2/K_path -I/home/daniil/TA/lab2/Lexer -I/home/daniil/TA/lab2/Minimisation -I/home/daniil/TA/lab2/Parser -I/home/daniil/TA/lab2/Regex -I/home/daniil/TA/lab2/Token -I/home/daniil/TA/lab2/build -std=gnu++20 -o CMakeFiles/regex_lib.dir/Regex/Regex.cpp.o -c /home/daniil/TA/lab2/Regex/Regex.cpp",
+  "file": "/home/daniil/TA/lab2/Regex/Regex.cpp",
+  "output": "CMakeFiles/regex_lib.dir/Regex/Regex.cpp.o"
+},
+{
+  "directory": "/home/daniil/TA/lab2/build",
+  "command": "/usr/bin/c++  -I/home/daniil/TA/lab2/AST -I/home/daniil/TA/lab2/Graph -I/home/daniil/TA/lab2/K_path -I/home/daniil/TA/lab2/Lexer -I/home/daniil/TA/lab2/Minimisation -I/home/daniil/TA/lab2/Parser -I/home/daniil/TA/lab2/Regex -I/home/daniil/TA/lab2/Token -I/home/daniil/TA/lab2/build -std=gnu++20 -o CMakeFiles/regex_lib.dir/Regex/RegexMatch.cpp.o -c /home/daniil/TA/lab2/Regex/RegexMatch.cpp",
+  "file": "/home/daniil/TA/lab2/Regex/RegexMatch.cpp",
+  "output": "CMakeFiles/regex_lib.dir/Regex/RegexMatch.cpp.o"
+},
+{
+  "directory": "/home/daniil/TA/lab2/build",
+  "command": "/usr/bin/c++  -I/home/daniil/TA/lab2/AST -I/home/daniil/TA/lab2/Graph -I/home/daniil/TA/lab2/K_path -I/home/daniil/TA/lab2/Lexer -I/home/daniil/TA/lab2/Minimisation -I/home/daniil/TA/lab2/Parser -I/home/daniil/TA/lab2/Regex -I/home/daniil/TA/lab2/Token -I/home/daniil/TA/lab2/build -std=gnu++20 -o CMakeFiles/regex_lib.dir/Lexer/FlexLexerAdapter.cpp.o -c /home/daniil/TA/lab2/Lexer/FlexLexerAdapter.cpp",
+  "file": "/home/daniil/TA/lab2/Lexer/FlexLexerAdapter.cpp",
+  "output": "CMakeFiles/regex_lib.dir/Lexer/FlexLexerAdapter.cpp.o"
+},
+{
+  "directory": "/home/daniil/TA/lab2/build",
+  "command": "/usr/bin/c++  -I/home/daniil/TA/lab2/AST -I/home/daniil/TA/lab2/Graph -I/home/daniil/TA/lab2/K_path -I/home/daniil/TA/lab2/Lexer -I/home/daniil/TA/lab2/Minimisation -I/home/daniil/TA/lab2/Parser -I/home/daniil/TA/lab2/Regex -I/home/daniil/TA/lab2/Token -I/home/daniil/TA/lab2/build -std=gnu++20 -o CMakeFiles/regex_lib.dir/lexer.cpp.o -c /home/daniil/TA/lab2/build/lexer.cpp",
+  "file": "/home/daniil/TA/lab2/build/lexer.cpp",
+  "output": "CMakeFiles/regex_lib.dir/lexer.cpp.o"
+},
+{
+  "directory": "/home/daniil/TA/lab2/build",
+  "command": "/usr/bin/c++  -I/home/daniil/TA/lab2/AST -I/home/daniil/TA/lab2/Graph -I/home/daniil/TA/lab2/K_path -I/home/daniil/TA/lab2/Lexer -I/home/daniil/TA/lab2/Minimisation -I/home/daniil/TA/lab2/Parser -I/home/daniil/TA/lab2/Regex -I/home/daniil/TA/lab2/Token -I/home/daniil/TA/lab2/build -std=gnu++20 -o CMakeFiles/regex_app.dir/main.cpp.o -c /home/daniil/TA/lab2/main.cpp",
+  "file": "/home/daniil/TA/lab2/main.cpp",
+  "output": "CMakeFiles/regex_app.dir/main.cpp.o"
+}
+]

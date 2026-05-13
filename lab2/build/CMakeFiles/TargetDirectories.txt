@@ -1,0 +1,4 @@
+/home/daniil/TA/lab2/build/CMakeFiles/regex_lib.dir
+/home/daniil/TA/lab2/build/CMakeFiles/regex_app.dir
+/home/daniil/TA/lab2/build/CMakeFiles/edit_cache.dir
+/home/daniil/TA/lab2/build/CMakeFiles/rebuild_cache.dir

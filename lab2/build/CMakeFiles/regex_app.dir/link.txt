@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/regex_app.dir/main.cpp.o -o regex_app  libregex_lib.a
