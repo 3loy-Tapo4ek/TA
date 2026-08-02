@@ -1,36 +1,43 @@
+#include "Tokenizer.hpp"
+#include "Parser.hpp"
+#include "NFABuilder.hpp"
+#include "DFABuilder.hpp"
+#include "DotVisualizer.hpp"
+
 #include <iostream>
-#include "Regex.hpp"
-#include "GraphVisualizer.hpp"
 
-int main() {
-    try {
-        regex_engine::Regex re;
-        
-        // 1. Компиляция (РВ -> НКА -> ДКА)
-        std::cout << "Compiling pattern..." << std::endl;
-        re.compile("a(<b>c...)|d");
 
-        // 2. Поиск (findall)
-        std::string text = "accc d acc";
-        auto matches = re.findall(text, regex_engine::WithGroups{});
+int main()
+{
+    Tokenizer test_tokenizer;
+    std::vector<Token> tokens = test_tokenizer.tokenize("l(l|d)...");
+    DotVisualizer visualizer;
 
-        std::cout << "Found " << matches.size() << " matches:" << std::endl;
-        for (const auto& m : matches) {
-            std::cout << "Full match: [" << m.full_match << "]" << std::endl;
-            try {
-                std::cout << "  Group 'b': " << m["b"] << std::endl;
-            } catch (...) {}
-        }
+    Parser test_parser;
 
-        // 3. Восстановление (K-пути)
-        std::cout << "Restored Regex: " << re.toRegexString() << std::endl;
+    //строим СД
+    auto ast_root = test_parser.Parse(tokens);
+    visualizer.visualize(ast_root, "ast.dot");
 
-        regex_engine::GraphVisualizer::exportNFA(re.getNFA(), "nfa.dot");
-        regex_engine::GraphVisualizer::exportDFA(re.getDFA(), "dfa.dot");
+    //строим НКА
+    NFABuilder builder;
+    FA nfa = builder.buildNFA(ast_root); // Получили чистую структуру НКА
 
-    } catch (const std::exception& e) {
-        std::cerr << "Error: " << e.what() << std::endl;
-    }
-    
+    // Передаем НКА в отдельный визуализатор
+    visualizer.visualize(nfa, "nfa.dot");
+
+    //Построим ДКА из НКА
+    DFABuilder dfabuilder;
+    FA dfa = dfabuilder.buildDFA(nfa);
+
+    //визуализация ДКА
+    visualizer.visualize(dfa, "dfa.dot");
+
+    //построим минДКА
+    FA min_dfa = dfabuilder.buildMinDFA(dfa);
+    visualizer.visualize(min_dfa, "min_dfa.dot");
+
+    std::cout << std::endl;;
+
     return 0;
 }
