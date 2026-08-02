@@ -1,43 +1,43 @@
-#include "Tokenizer.hpp"
-#include "Parser.hpp"
-#include "NFABuilder.hpp"
-#include "DFABuilder.hpp"
-#include "DotVisualizer.hpp"
-
+#include "CoolRegex.hpp"
 #include <iostream>
-
 
 int main()
 {
-    Tokenizer test_tokenizer;
-    std::vector<Token> tokens = test_tokenizer.tokenize("l(l|d)...");
-    DotVisualizer visualizer;
+    // Ищем вызовы функций get(...) и set(...) с аргументами из a, b, 0, 1
+    CoolRegex re("(get|set)%(%(a|b|0|1)...%)%;");
+    re.compile();
 
-    Parser test_parser;
+    std::string code = R"(
+        void process() {
+            int x = get(a01);
+            set(b100);
+            
+            // Это не должно совпасть (другие буквы):
+            get(xyz99); 
+            
+            if (x > 0) {
+                get(); // Пустые скобки - должно совпасть!
+                reset(a01); // Префикс "reset" не подходит
+            }
+            
+            // Сложный вызов с длинными аргументами:
+            set(a0101b101a);
+            
+            /* Без точки с запятой в конце - не должно совпасть */
+            get(a1)
+        }
+    )";
 
-    //строим СД
-    auto ast_root = test_parser.Parse(tokens);
-    visualizer.visualize(ast_root, "ast.dot");
+    // Можно также визуализировать весь путь компиляции этой сложной регулярки:
+    re.visualizePipeline("complex_test");
 
-    //строим НКА
-    NFABuilder builder;
-    FA nfa = builder.buildNFA(ast_root); // Получили чистую структуру НКА
+    auto matches = re.findAll(code);
 
-    // Передаем НКА в отдельный визуализатор
-    visualizer.visualize(nfa, "nfa.dot");
-
-    //Построим ДКА из НКА
-    DFABuilder dfabuilder;
-    FA dfa = dfabuilder.buildDFA(nfa);
-
-    //визуализация ДКА
-    visualizer.visualize(dfa, "dfa.dot");
-
-    //построим минДКА
-    FA min_dfa = dfabuilder.buildMinDFA(dfa);
-    visualizer.visualize(min_dfa, "min_dfa.dot");
-
-    std::cout << std::endl;;
+    std::cout << "=== НАЙДЕННЫЕ ВЫЗОВЫ ФУНКЦИЙ ===" << std::endl;
+    std::cout << "Всего совпадений: " << matches.size() << std::endl;
+    for (size_t i = 0; i < matches.size(); ++i) {
+        std::cout << i + 1 << ". " << matches[i] << std::endl;
+    }
 
     return 0;
 }
