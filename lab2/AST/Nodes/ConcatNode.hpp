@@ -17,6 +17,7 @@ public:
     const std::unique_ptr<Node>& getLeftChild() const { return left_child_; }
     const std::unique_ptr<Node>& getRightChild() const { return right_child_; }
 
+    //overriding
+    std::unique_ptr<Node> clone() const override { return std::make_unique<ConcatNode>(left_child_->clone(), right_child_->clone()); };
 
-    std::string ToString() const override { return left_child_->ToString() + right_child_->ToString();};
 };

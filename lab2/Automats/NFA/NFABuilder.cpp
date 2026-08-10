@@ -23,7 +23,7 @@ size_t NFABuilder::createState()
 
 //creating FAFragment methods
 
-FAFragment NFABuilder::createLiteralAutomata(char symbol)
+FAFragment NFABuilder::createLiteralAutomata(std::optional<char> symbol)
 {
     size_t start_id = createState();
     size_t accept_id = createState();

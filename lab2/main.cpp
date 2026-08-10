@@ -3,32 +3,11 @@
 
 int main()
 {
-    // Ищем вызовы функций get(...) и set(...) с аргументами из a, b, 0, 1
-    CoolRegex re("(get|set)%(%(a|b|0|1)...%)%;");
+    CoolRegex re("(a|(b...m){14})?c{20}...");
     re.compile();
 
-    std::string code = R"(
-        void process() {
-            int x = get(a01);
-            set(b100);
-            
-            // Это не должно совпасть (другие буквы):
-            get(xyz99); 
-            
-            if (x > 0) {
-                get(); // Пустые скобки - должно совпасть!
-                reset(a01); // Префикс "reset" не подходит
-            }
-            
-            // Сложный вызов с длинными аргументами:
-            set(a0101b101a);
-            
-            /* Без точки с запятой в конце - не должно совпасть */
-            get(a1)
-        }
-    )";
+    std::string code = "abcabcabcabdcabcabcabcabcabcabcabcabcabcabcabmephidipkacabcabcabcabcabcabcabc";
 
-    // Можно также визуализировать весь путь компиляции этой сложной регулярки:
     re.visualizePipeline("complex_test");
 
     auto matches = re.findAll(code);

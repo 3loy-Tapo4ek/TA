@@ -31,6 +31,8 @@ set(SOURCES
         Visualization/DotVisualizer.cpp
         Automats/DFA/DFABuilder.hpp
         Automats/DFA/DFABuilder.cpp
+        CoolRegex/CoolRegex.hpp
+        CoolRegex/CoolRegex.cpp
 
 )
 
@@ -46,4 +48,5 @@ target_include_directories(${BIN} PRIVATE
         "${CMAKE_SOURCE_DIR}/Automats/NFA/"
         "${CMAKE_SOURCE_DIR}/Automats/DFA/"
         "${CMAKE_SOURCE_DIR}/Visualization"
+        "${CMAKE_SOURCE_DIR}/CoolRegex"
 )

@@ -10,9 +10,11 @@ private:
 public:
     explicit StarNode(std::unique_ptr<Node> child) : child_(std::move(child)) {};
 
-    std::string ToString() const override { return child_->ToString() + "..."; };
-
     void accept(INodeVisitor& visitor) const override { visitor.visit(*this); }
     
     const std::unique_ptr<Node>& getChild() const { return child_; }
+
+    //overriding
+    std::unique_ptr<Node> clone() const override { return std::make_unique<StarNode>(child_->clone()); };
+
 };

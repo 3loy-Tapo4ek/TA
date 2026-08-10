@@ -4,8 +4,15 @@
 void DotVisualizer::visit(const ANode& node)
 {
     int id = id_counter_++;
-    file_ << "    node" << id << " [label=\"" << node.getSymbol() 
+    
+    // Безопасно формируем подпись для Graphviz
+    std::string label = node.getSymbol().has_value() 
+        ? std::string(1, node.getSymbol().value()) 
+        : "ε";
+
+    file_ << "    node" << id << " [label=\"" << label 
           << "\", shape=circle, style=filled, fillcolor=\"#C8E6C9\"];\n";
+          
     last_id_ = id;
 }
 

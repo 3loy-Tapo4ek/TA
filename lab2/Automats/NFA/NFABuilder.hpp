@@ -23,7 +23,7 @@ private:
     void redirectTransitions(size_t from_id, size_t to_id);
 
     //methods for creating automat fragments
-    FAFragment createLiteralAutomata(char symbol);
+    FAFragment createLiteralAutomata(std::optional<char> symbol);
     FAFragment createConcatAutomata(const FAFragment& left, const FAFragment& right);
     FAFragment createOrAutomata(const FAFragment& left_automata, const FAFragment& right_automata);
     FAFragment createStarAutomata(const FAFragment& automata);

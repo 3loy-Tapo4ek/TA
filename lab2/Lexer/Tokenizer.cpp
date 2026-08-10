@@ -11,7 +11,7 @@ std::vector<Token> Tokenizer::tokenize(std::string input_value)
         //screeninig
         if (*ptr == '%')
         {
-            auto [start_ptr, end_ptr] = findEscapedBlock(ptr, input_value.cend());
+            auto [start_ptr, end_ptr] = findEscapedBlock(ptr, input_value.cend(), '%');
             for (auto inner_it = start_ptr; inner_it != end_ptr; ++inner_it)
             {
                 output_tokens.push_back(Token{TokenType::Literal, *inner_it});
@@ -19,6 +19,8 @@ std::vector<Token> Tokenizer::tokenize(std::string input_value)
 
             ptr = end_ptr;
         }
+
+        //basic symbols
 
         else if (*ptr == '|')
         {
@@ -41,6 +43,24 @@ std::vector<Token> Tokenizer::tokenize(std::string input_value)
             output_tokens.push_back(Token{TokenType::CloseParen});
         }
 
+        //here comes crazy stuff
+
+        else if (*ptr == '?')
+        {
+            output_tokens.push_back(Token{TokenType::Question});
+        }
+
+        else if (*ptr == '{')
+        {
+            auto [start_ptr, end_ptr] = findEscapedBlock(ptr, input_value.cend(), '}');
+
+            if (std::all_of(start_ptr, end_ptr, ::isdigit))
+            {
+                size_t count = std::stoul(std::string(start_ptr, end_ptr));
+                output_tokens.push_back(Token{TokenType::Repeat, std::nullopt, count});
+            }
+            ptr = end_ptr;
+        }
         else
         {
             output_tokens.push_back(Token{TokenType::Literal, *ptr});
@@ -52,9 +72,9 @@ std::vector<Token> Tokenizer::tokenize(std::string input_value)
     return output_tokens;
 };
 
-std::pair<std::string::const_iterator, std::string::const_iterator> Tokenizer::findEscapedBlock(std::string::const_iterator it, std::string::const_iterator end)
+std::pair<std::string::const_iterator, std::string::const_iterator> Tokenizer::findEscapedBlock(std::string::const_iterator it, std::string::const_iterator end, char closing)
 {
-    ++it; //skip opening %
+    ++it; //skip opening symbol
         
     if (it == end) 
     {
@@ -65,7 +85,7 @@ std::pair<std::string::const_iterator, std::string::const_iterator> Tokenizer::f
     ++it; //skip first symbol
 
     //search for closing %
-    while (it != end && *it != '%')
+    while (it != end && *it != closing)
     {
         ++it;
     }

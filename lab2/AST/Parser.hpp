@@ -20,7 +20,14 @@ private:
     std::pair<std::list<ParserItem>::iterator, std::list<ParserItem>::iterator> findClosestParentheses();
 
     void collapseLiterals(std::list<ParserItem>::iterator start, std::list<ParserItem>::iterator last);
-    void collapseStars(std::list<ParserItem>::iterator start, std::list<ParserItem>::iterator last);
+
+    //postfix nodes
+    void collapsePostfix(std::list<ParserItem>::iterator start, std::list<ParserItem>::iterator last);
+    void handleKleene(auto& it);
+    void handleQuestion(auto& it);
+    void handleRepeat(auto& it);
+
+
     void collapseConcat(std::list<ParserItem>::iterator start, std::list<ParserItem>::iterator last);
     void collapseOr(std::list<ParserItem>::iterator start, std::list<ParserItem>::iterator last);
 

@@ -25,8 +25,8 @@ std::unique_ptr<Node> Parser::Parse(std::vector<Token> tokens)
         //а) схлопываем ЛИТЕРАЛЫ в а-ноды
         collapseLiterals(start, last);
 
-        //б) схлоппываем ЗАМЫКАНИЕ КЛИНИ в стар-ноды
-        collapseStars(start, last);
+        //б) схлоппываем ПОСТФИКСНЫЕ метасимволы
+        collapsePostfix(start, last);
 
         //в) схлопываем КОНКАТЕНАЦИЮ в конкат-ноды
         collapseConcat(start, last);
@@ -84,8 +84,8 @@ void Parser::collapseLiterals(std::list<ParserItem>::iterator start, std::list<P
     }
 };
 
-//Пробегает по всем символам в пределах [start, last] в поисках ЗАМЫКАНИЕ КЛИНИ
-void Parser::collapseStars(std::list<ParserItem>::iterator start, std::list<ParserItem>::iterator last)
+//Пробегает по всем символам в пределах [start, last] в поисках ЗАМЫКАНИЕ КЛИНИ или вопросика
+void Parser::collapsePostfix(std::list<ParserItem>::iterator start, std::list<ParserItem>::iterator last)
 {
     auto it = std::next(start);
 
@@ -93,20 +93,76 @@ void Parser::collapseStars(std::list<ParserItem>::iterator start, std::list<Pars
     {
         if (it->type_ == ParserItem::Type::Token && it->token_.token_type_ == TokenType::KleeneStar)
         {
-            if (std::prev(it)->type_ != ParserItem::Type::Node)
-            {
-                throw std::runtime_error("Синтаксическая ошибка при написании ЗАМЫКАНИЕ КЛИНИ");
-            }
+            handleKleene(it);
+            it = items_.erase(it);
+        }
 
-            auto star = std::make_unique<StarNode>(std::move(std::prev(it)->node_));
-            *std::prev(it) = ParserItem(std::move(star));
+        else if (it->type_ == ParserItem::Type::Token && it->token_.token_type_ == TokenType::Question)
+        {
+            handleQuestion(it); //create or-node(r|эпсилон)
+            it = items_.erase(it);
+        }
 
+        else if (it->type_ == ParserItem::Type::Token && it->token_.token_type_ == TokenType::Repeat)
+        {
+            handleRepeat(it); //create or-node(r|эпсилон)
             it = items_.erase(it);
         }
 
         else { it++; }
 
     }
+};
+
+void Parser::handleRepeat(auto& it)
+{
+    size_t count = it->token_.repeat_value.value();
+
+    if (count == 0)
+    {
+        *std::prev(it) = ParserItem(std::make_unique<ANode>());
+    }
+
+    else if (count == 1)
+    {
+        return;
+    }
+
+    else if (count > 1)
+    {
+        auto origin_node = std::move(std::prev(it)->node_);
+        auto result_node = origin_node->clone();
+
+        for (size_t i = 2; i <= count; i++)
+        {
+            auto clone_node = origin_node->clone();
+            result_node = std::make_unique<ConcatNode>(std::move(result_node), std::move(clone_node));
+        }
+
+        *std::prev(it) = ParserItem(std::move(result_node));
+    }
+};
+
+void Parser::handleQuestion(auto& it)
+{
+    if (std::prev(it)->type_ != ParserItem::Type::Node)
+    {
+        throw std::runtime_error("Синтаксическая ошибка при написании ОПЦИОНАЛЬНАЯ ЧАСТЬ");
+    }
+
+    auto or_node = std::make_unique<OrNode>(std::move(std::prev(it)->node_), std::make_unique<ANode>());
+    *std::prev(it) = ParserItem(std::move(or_node));
+};
+
+void Parser::handleKleene(auto& it)
+{
+    if (std::prev(it)->type_ != ParserItem::Type::Node)
+    {
+        throw std::runtime_error("Синтаксическая ошибка при написании ЗАМЫКАНИЕ КЛИНИ");
+    }
+
+    auto star = std::make_unique<StarNode>(std::move(std::prev(it)->node_));
+    *std::prev(it) = ParserItem(std::move(star));
 };
 
 //Пробегает по всем символам в пределах [start, last] в поисках Конкатенации
@@ -150,17 +206,5 @@ void Parser::collapseOr(std::list<ParserItem>::iterator start, std::list<ParserI
         }
 
         else { it++; }
-    }
-};
-
-
-//Быстрая отладка
-void Parser::PrintItems()
-{
-    for (auto current_item = items_.begin(); current_item != items_.end(); current_item++)
-    {
-        if (current_item->type_ == ParserItem::Type::Token) { std::cout << static_cast<int>(current_item->token_.token_type_); }
-        if (current_item->type_ == ParserItem::Type::Node) { std::cout << current_item->node_->ToString(); }
-
     }
 };
