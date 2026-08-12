@@ -355,3 +355,62 @@ std::set<char> FAOperator::getExistingSymbols(const State& state)
     return symbols;
 }
 
+bool FAOperator::isIsomorphic(const FA& fa1, const FA& fa2)
+{
+    // 1. Изоморфные автоматы обязаны иметь одинаковое число состояний
+    if (fa1.states_.size() != fa2.states_.size()) {
+        return false;
+    }
+
+    auto alphabet1 = getAlphabet(fa1);
+    auto alphabet2 = getAlphabet(fa2);
+    if (alphabet1 != alphabet2) {
+        return false;
+    }
+
+    // Достраиваем оба автомата до полных
+    FA dfa1 = makeComplete(fa1, alphabet1);
+    FA dfa2 = makeComplete(fa2, alphabet1);
+
+    std::map<size_t, size_t> map_1_to_2;
+    std::queue<std::pair<size_t, size_t>> queue;
+
+    std::pair<size_t, size_t> start_pair = {dfa1.start_ptr_, dfa2.start_ptr_};
+    queue.push(start_pair);
+    map_1_to_2[start_pair.first] = start_pair.second;
+
+    while (!queue.empty())
+    {
+        auto [q1, q2] = queue.front();
+        queue.pop();
+
+        // Флаги принятия должны совпадать
+        if (dfa1.states_[q1].is_acceptable_ != dfa2.states_[q2].is_acceptable_) {
+            return false;
+        }
+
+        // Проверяем переходы по каждому символу
+        for (char symbol : alphabet1)
+        {
+            size_t next1 = getNextState(dfa1, q1, symbol);
+            size_t next2 = getNextState(dfa2, q2, symbol);
+
+            if (map_1_to_2.contains(next1))
+            {
+                // Если переход ведет в уже отображенное состояние,
+                // оно должно совпадать с next2
+                if (map_1_to_2[next1] != next2) {
+                    return false;
+                }
+            }
+            else
+            {
+                // Если состояние еще не отображено — запоминаем и кладем в очередь
+                map_1_to_2[next1] = next2;
+                queue.push({next1, next2});
+            }
+        }
+    }
+
+    return map_1_to_2.size() == dfa1.states_.size();
+}

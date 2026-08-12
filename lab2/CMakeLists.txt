@@ -8,10 +8,9 @@ project(regex_library VERSION ${VERSION} LANGUAGES CXX
         DESCRIPTION "Regular Expression Compiler and Matcher Laboratory Work"
 )
 
-set(BIN regex_processor)
+find_package(Catch2 REQUIRED)
 
-set(SOURCES
-        main.cpp
+set(CORE_SOURCES
         Lexer/Tokenizer.cpp
         Lexer/Tokenizer.hpp
         Lexer/TokenType.hpp
@@ -35,12 +34,9 @@ set(SOURCES
         CoolRegex/CoolRegex.cpp
         Automats/FAOperator/FAOperator.cpp
         Automats/FAOperator/FAOperator.hpp
-
 )
 
-add_executable(${BIN} ${SOURCES})
-
-target_include_directories(${BIN} PRIVATE
+set(INCLUDE_DIRS
         "${CMAKE_SOURCE_DIR}/"
         "${CMAKE_SOURCE_DIR}/Lexer/"
         "${CMAKE_SOURCE_DIR}/AST/"
@@ -53,3 +49,10 @@ target_include_directories(${BIN} PRIVATE
         "${CMAKE_SOURCE_DIR}/CoolRegex"
         "${CMAKE_SOURCE_DIR}/Automats/FAOperator/"
 )
+
+add_executable(regex_processor main.cpp ${CORE_SOURCES})
+target_include_directories(regex_processor PRIVATE ${INCLUDE_DIRS})
+
+add_executable(run_tests test.cpp ${CORE_SOURCES})
+target_include_directories(run_tests PRIVATE ${INCLUDE_DIRS})
+target_link_libraries(run_tests PRIVATE Catch2::Catch2)

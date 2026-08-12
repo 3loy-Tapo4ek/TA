@@ -49,6 +49,8 @@ public:
 
     static FA MakeComplement(const FA& fa);
     static FA MakeDifference(const FA& fa_1, const FA& fa_2);
+    static bool isIsomorphic(const FA& fa1, const FA& fa2);
+
     
     static std::string ReconstructRegex(const FA& fa);
 };
