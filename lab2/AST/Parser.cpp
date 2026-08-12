@@ -1,8 +1,10 @@
 #include "Parser.hpp"
+#include <iostream>
 
 std::unique_ptr<Node> Parser::Parse(std::vector<Token> tokens)
 {
     items_.clear();
+    captured_groups_.clear();
 
     //так называемое многократное сканирование
 
@@ -24,6 +26,9 @@ std::unique_ptr<Node> Parser::Parse(std::vector<Token> tokens)
 
         //а) схлопываем ЛИТЕРАЛЫ в а-ноды
         collapseLiterals(start, last);
+        //a1) схлопываем ГРУППЫ_ЗАХВАТА
+        collapseNamedGroupRef(start, last);
+
 
         //б) схлоппываем ПОСТФИКСНЫЕ метасимволы
         collapsePostfix(start, last);
@@ -33,6 +38,9 @@ std::unique_ptr<Node> Parser::Parse(std::vector<Token> tokens)
 
         //г) схлопываем ИЛИ в ор-ноды
         collapseOr(start, last);
+
+        //if oper paren was a NAMED_GROUP - save `em to map
+        saveNamedGroup(start, last);
 
         //д) удаляем искуственные скобки
         items_.erase(last);
@@ -52,12 +60,12 @@ std::pair<std::list<ParserItem>::iterator, std::list<ParserItem>::iterator> Pars
         {
             auto start = current_item;
             auto last = current_item;
-            while (start != items_.begin() && (start->type_ != ParserItem::Type::Token || start->token_.token_type_ != TokenType::OpenParen))
+            while (start != items_.begin() && !isOperParen(*start))
             {
                 start--;
             }
 
-            if (start->token_.token_type_ != TokenType::OpenParen && start == items_.begin())
+            if (!isOperParen(*start))
             {
                 throw std::runtime_error("Не закрыли скобки");
             }
@@ -67,8 +75,16 @@ std::pair<std::list<ParserItem>::iterator, std::list<ParserItem>::iterator> Pars
     }
 
     throw std::runtime_error("Закончились скобки и внешние скобки обработались неправильно");
-
 }
+
+bool Parser::isOperParen(const ParserItem& item)
+{
+    return item.type_ == ParserItem::Type::Token &&
+    (item.token_.token_type_ == TokenType::OpenParen || 
+    item.token_.token_type_ == TokenType::NamedGroupName);
+}
+
+
 
 //Пробегает по всем символам в пределах [start, last] в поисках ЛИТЕРАЛОВ
 void Parser::collapseLiterals(std::list<ParserItem>::iterator start, std::list<ParserItem>::iterator last)
@@ -83,6 +99,25 @@ void Parser::collapseLiterals(std::list<ParserItem>::iterator start, std::list<P
         }
     }
 };
+
+void Parser::collapseNamedGroupRef(std::list<ParserItem>::iterator start, std::list<ParserItem>::iterator last)
+{
+    for (auto it = std::next(start); it != last; it++)
+    {
+        if (it->type_ == ParserItem::Type::Token && it->token_.token_type_ == TokenType::NamedGroupRef)
+        {
+            std::string name = it->token_.group_name.value();
+            std::cout << "[PARSER] LOOKING UP GROUP: '" << name << "'\n";
+            if (!captured_groups_.contains(name))
+            {
+                throw std::runtime_error("Неизвестная группа: " + name);
+            }
+
+            *it = ParserItem(captured_groups_[name]->clone());
+        }
+    }
+};
+
 
 //Пробегает по всем символам в пределах [start, last] в поисках ЗАМЫКАНИЕ КЛИНИ или вопросика
 void Parser::collapsePostfix(std::list<ParserItem>::iterator start, std::list<ParserItem>::iterator last)
@@ -208,3 +243,15 @@ void Parser::collapseOr(std::list<ParserItem>::iterator start, std::list<ParserI
         else { it++; }
     }
 };
+
+void Parser::saveNamedGroup(std::list<ParserItem>::iterator start, std::list<ParserItem>::iterator last)
+{
+    if (start->type_ == ParserItem::Type::Token && start->token_.token_type_ == TokenType::NamedGroupName)
+    {
+        std::string name = start->token_.group_name.value();
+
+        auto& inner_node = std::next(start)->node_; 
+       std::cout << "[PARSER] SAVING GROUP TO MAP: '" << name << "'\n";
+        captured_groups_[name] = inner_node->clone();
+    }
+}

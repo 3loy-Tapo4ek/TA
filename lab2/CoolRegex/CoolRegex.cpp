@@ -13,23 +13,31 @@ void CoolRegex::compile() {
 
 void CoolRegex::visualizePipeline(const std::string& prefix) const
 {
-    Tokenizer tokenizer;
-    auto tokens = tokenizer.tokenize(pattern_);
+    if (!pattern_.empty())
+    {
+        Tokenizer tokenizer;
+        auto tokens = tokenizer.tokenize(pattern_);
 
-    Parser parser;
-    auto ast_root = parser.Parse(tokens);
-    DotVisualizer::visualize(ast_root, prefix + "_1_ast.dot");
+        Parser parser;
+        auto ast_root = parser.Parse(tokens);
+        DotVisualizer::visualize(ast_root, prefix + "_1_ast.dot");
 
-    NFABuilder nfa_builder;
-    FA nfa = nfa_builder.buildNFA(ast_root);
-    DotVisualizer::visualize(nfa, prefix + "_2_nfa.dot");
+        NFABuilder nfa_builder;
+        FA nfa = nfa_builder.buildNFA(ast_root);
+        DotVisualizer::visualize(nfa, prefix + "_2_nfa.dot");
 
-    DFABuilder dfa_builder;
-    FA dfa = dfa_builder.buildDFA(nfa);
-    DotVisualizer::visualize(dfa, prefix + "_3_dfa.dot");
+        DFABuilder dfa_builder;
+        FA dfa = dfa_builder.buildDFA(nfa);
+        DotVisualizer::visualize(dfa, prefix + "_3_dfa.dot");
 
-    FA min_dfa = dfa_builder.buildMinDFA(dfa);
-    DotVisualizer::visualize(min_dfa, prefix + "_4_min_dfa.dot");
+        FA min_dfa = dfa_builder.buildMinDFA(dfa);
+        DotVisualizer::visualize(min_dfa, prefix + "_4_min_dfa.dot");
+    }
+
+    else if (min_dfa_.has_value())
+    {
+        DotVisualizer::visualize(min_dfa_.value(), prefix + "_4_min_dfa.dot");
+    }
 };
 
 std::vector<std::string> CoolRegex::findAll(const std::string& input)

@@ -1,21 +1,26 @@
 #include "CoolRegex.hpp"
+#include "FAOperator.hpp"
+#include "DotVisualizer.hpp"
 #include <iostream>
 
 int main()
 {
-    CoolRegex re("(a|(b...m){14})?c{20}...");
-    re.compile();
+    try 
+    {
+        // 1. Создаем выражения L1 = {"a", "b", "c"} и L2 = {"b"}
+        auto re1 = CoolRegex::compile("a|b|c");
+        auto re2 = CoolRegex::compile("b");
 
-    std::string code = "abcabcabcabdcabcabcabcabcabcabcabcabcabcabcabmephidipkacabcabcabcabcabcabcabc";
+        // 2. Строим разность L1 \ L2
+        FA diff_fa = FAOperator::MakeDifference(re1.getDFA(), re2.getDFA());
+        CoolRegex diff_re(std::move(diff_fa));
 
-    re.visualizePipeline("complex_test");
-
-    auto matches = re.findAll(code);
-
-    std::cout << "=== НАЙДЕННЫЕ ВЫЗОВЫ ФУНКЦИЙ ===" << std::endl;
-    std::cout << "Всего совпадений: " << matches.size() << std::endl;
-    for (size_t i = 0; i < matches.size(); ++i) {
-        std::cout << i + 1 << ". " << matches[i] << std::endl;
+        // 3. Сохраняем граф результата для проверки
+        diff_re.visualizePipeline("Diff");
+    } 
+    catch (const std::exception& e) 
+    {
+        std::cerr << " Ошибка: " << e.what() << std::endl;
     }
 
     return 0;

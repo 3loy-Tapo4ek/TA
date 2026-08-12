@@ -1,5 +1,7 @@
 #include "Tokenizer.hpp"
 
+#include <iostream>
+
 std::vector<Token> Tokenizer::tokenize(std::string input_value)
 {
     std::vector<Token> output_tokens;
@@ -33,6 +35,18 @@ std::vector<Token> Tokenizer::tokenize(std::string input_value)
             ptr += 2;
         }
 
+        //group name
+        else if (input_value.cend() - ptr >= 2 && *ptr == '(' && *(ptr+1) == '<')
+        {
+            auto [start_ptr, end_ptr] = findEscapedBlock(ptr + 1, input_value.cend(), '>');
+
+            std::string group_name = std::string(start_ptr, end_ptr);
+            std::cout << "[LEXER] Group Name Defined: '" << group_name << "'\n";
+            output_tokens.push_back(Token{TokenType::NamedGroupName, std::nullopt, std::nullopt, group_name});
+ 
+            ptr = end_ptr;
+        }
+
         else if (*ptr == '(')
         {
             output_tokens.push_back(Token{TokenType::OpenParen});
@@ -50,6 +64,7 @@ std::vector<Token> Tokenizer::tokenize(std::string input_value)
             output_tokens.push_back(Token{TokenType::Question});
         }
 
+        //repeater
         else if (*ptr == '{')
         {
             auto [start_ptr, end_ptr] = findEscapedBlock(ptr, input_value.cend(), '}');
@@ -61,6 +76,21 @@ std::vector<Token> Tokenizer::tokenize(std::string input_value)
             }
             ptr = end_ptr;
         }
+
+        //named groups
+
+        else if (*ptr == '<')
+        {
+            auto [start_ptr, end_ptr] = findEscapedBlock(ptr, input_value.cend(), '>');
+
+            std::string group_name = std::string(start_ptr, end_ptr);
+            std::cout << "[LEXER] Group Ref Requested: '" << group_name << "'\n";
+            output_tokens.push_back(Token{TokenType::NamedGroupRef, std::nullopt, std::nullopt, group_name});
+ 
+            ptr = end_ptr;
+
+        }
+
         else
         {
             output_tokens.push_back(Token{TokenType::Literal, *ptr});
