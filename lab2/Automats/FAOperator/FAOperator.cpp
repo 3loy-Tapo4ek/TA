@@ -14,6 +14,173 @@ std::set<char> FAOperator::getAlphabet(const FA& fa)
     return alphabet;
 };
 
+std::string FAOperator::ReconstructRegex(const FA& fa)
+{
+
+    size_t k = 0;
+    size_t n = fa.states_.size();
+
+    //initiate matrix n*n
+    std::vector<std::vector<std::string>> R0;
+    R0.resize(n);
+
+    for (auto& vector : R0)
+    {
+        vector.resize(n);
+    }
+
+    //filling R0
+    for (size_t i = 0; i < n; i++)
+    {
+        for (size_t j = 0; j < n; j++)
+        {
+            R0[i][j] = unitingTheArcs(i, j, fa);
+        }
+    }
+
+    //induction for k-path
+
+    auto R_prev = R0;
+
+    for (size_t k = 0; k < n; k++)
+    {
+        auto R_next = R_prev;
+
+        for (size_t i = 0; i < n; i++)
+        {
+            for (size_t j = 0; j < n; j++)
+            {
+                //R_next[i][j] = R_prev[i][j] | ( R_prev[i][k] * (R_prev[k][k])* * R_prev[k][j] )
+
+                std::string path_without_k = R_prev[i][j]; //was on previous step
+
+                std::string ik = R_prev[i][k];
+                std::string kj = R_prev[k][j];
+
+                if (i == k) { ik = "ε"; }
+                if (j == k) { kj = "ε"; }
+
+                std::string path_through_k = combinePath(ik, R_prev[k][k], kj); // проходит через к один или более раз
+            
+                R_next[i][j] = combineUnion(path_without_k, path_through_k);
+            }
+        }
+
+        R_prev = std::move(R_next);
+    }
+
+    std::string final_regex = "";
+
+    for (size_t j = 0; j < n; j++)
+    {
+        if (fa.states_[j].is_acceptable_)
+        {
+            std::string path = R_prev[fa.start_ptr_][j];
+            final_regex = combineUnion(final_regex, path);
+        }
+    }
+
+    return cleanupRegex(final_regex);
+};
+
+std::string FAOperator::cleanupRegex(std::string expr)
+{
+    if (expr == "ε") {return "";}
+
+    replaceAll(expr, "ε|", "");
+    replaceAll(expr, "|ε", "");
+    replaceAll(expr, "ε", "");
+    replaceAll(expr, "||", "|");
+
+    return expr;
+};
+
+void FAOperator::replaceAll(std::string& str, const std::string& from, const std::string& to)
+{
+    size_t start_pos = 0;
+    while ((start_pos = str.find(from, start_pos)) != std::string::npos) 
+    {
+        str.replace(start_pos, from.length(), to);
+        start_pos += to.length();
+    }
+}
+
+std::string FAOperator::combineUnion(const std::string& a, const std::string& b)
+{
+    if (a.empty()) return b;
+    if (b.empty()) return a;
+    if (a == b) return a;
+    return a + "|" + b;
+}
+
+
+std::string FAOperator::combinePath(std::string i_to_k, std::string k_to_k, std::string k_to_j)
+{
+    if (i_to_k.empty() || k_to_j.empty()) { return ""; }
+
+    std::string loop = cleanupRegex(k_to_k);
+
+    std::vector<std::string> parts;
+
+    if (i_to_k != "ε") { parts.push_back(wrapIfNeeded(i_to_k)); }
+
+    if (!loop.empty()) 
+    {
+        parts.push_back("(" + loop + ")...");
+    }
+
+    if (k_to_j != "ε") { parts.push_back(wrapIfNeeded(k_to_j)); }
+
+    if (parts.empty()) { return "ε"; }
+
+    std::string expression;
+    for (const auto& part : parts)
+    {
+        expression += part;
+    }
+    
+    return expression;
+}
+
+std::string FAOperator::wrapIfNeeded(const std::string& str)
+{
+    // Если внутри выражения есть '|', оборачиваем в скобки для сохранения приоритета
+    if (str.find('|') != std::string::npos)
+    {
+        return "(" + str + ")";
+    }
+    return str;
+}
+
+
+std::string FAOperator::unitingTheArcs(size_t i, size_t j, const FA& fa)
+{
+    std::vector<std::string> parts;
+
+    if (i == j) { parts.push_back("ε"); }
+
+    //filling R0
+    for (const auto& transition : fa.states_[i].transitions)
+    {
+        if (transition.targer_state_id == j && transition.symbol.has_value())
+        {
+            parts.push_back(std::string(1, transition.symbol.value()));
+        }
+    }
+
+    std::string expression = "";
+    for (size_t p = 0; p < parts.size(); ++p)
+    {
+        expression += parts[p];
+        if (p + 1 < parts.size())
+        {
+            expression += "|";
+        }
+    }
+
+    return expression;
+}
+
 FA FAOperator::MakeDifference(const FA& fa_1, const FA& fa_2)
 {
     std::set<char> common_alphabet = getAlphabet(fa_1);
@@ -25,7 +192,6 @@ FA FAOperator::MakeDifference(const FA& fa_1, const FA& fa_2)
 
     std::set<std::pair<size_t, size_t>> reachable_states = getReachable(complete_fa_1, complete_fa_2, common_alphabet);
 
-                    //pair          id
     std::map<std::pair<size_t, size_t>, size_t> pair_to_id_map;
     
     size_t current_id = 0;

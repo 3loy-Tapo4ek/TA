@@ -31,6 +31,17 @@ private:
     static FA doLogicalOperation(const FA& fa_1, const FA& fa_2);
     static bool isAcceptableState(OperationType operation, bool acc1, bool acc2);
 
+    //helpers for K-path
+    static std::string unitingTheArcs(size_t i, size_t j, const FA& fa);
+    static std::string combinePath(std::string i_to_k, std::string k_to_k, std::string k_to_j);
+    static std::string combineUnion(const std::string& a, const std::string& b);
+
+    //just deleates epsilones or converts r|e = ?
+    static std::string cleanupRegex(std::string expr);
+    static void replaceAll(std::string& str, const std::string& from, const std::string& to);
+    static std::string wrapIfNeeded(const std::string& str);
+
+
 
 
 public:
@@ -39,6 +50,5 @@ public:
     static FA MakeComplement(const FA& fa);
     static FA MakeDifference(const FA& fa_1, const FA& fa_2);
     
-
     static std::string ReconstructRegex(const FA& fa);
 };

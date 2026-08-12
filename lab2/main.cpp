@@ -1,22 +1,23 @@
 #include "CoolRegex.hpp"
 #include "FAOperator.hpp"
-#include "DotVisualizer.hpp"
 #include <iostream>
 
 int main()
 {
     try 
     {
-        // 1. Создаем выражения L1 = {"a", "b", "c"} и L2 = {"b"}
-        auto re1 = CoolRegex::compile("a|b|c");
-        auto re2 = CoolRegex::compile("b");
+        CoolRegex re("(a{2}|b)...");
+        re.compile();
 
-        // 2. Строим разность L1 \ L2
-        FA diff_fa = FAOperator::MakeDifference(re1.getDFA(), re2.getDFA());
-        CoolRegex diff_re(std::move(diff_fa));
+        re.visualizePipeline("Before");
 
-        // 3. Сохраняем граф результата для проверки
-        diff_re.visualizePipeline("Diff");
+        std::string origin_expression = FAOperator::ReconstructRegex(re.getDFA());
+
+        CoolRegex new_regex(origin_expression);
+        new_regex.compile();
+        new_regex.visualizePipeline("After");
+
+        std::cout << origin_expression << std::endl;
     } 
     catch (const std::exception& e) 
     {
