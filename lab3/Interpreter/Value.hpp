@@ -67,7 +67,7 @@ public:
     Array& asArray()
     {
         if (!isArray()) { throw std::runtime_error("Ожидался array");}
-        return std::get<Array&>(data_);
+        return std::get<Array>(data_);
     }
 
 };

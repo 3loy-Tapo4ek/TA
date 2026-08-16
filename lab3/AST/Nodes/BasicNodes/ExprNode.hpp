@@ -15,7 +15,7 @@ enum class BinaryOp
     Subtract,   // -
     Multiply,   // *
     Divide,     // /
-    Modulo,     // %
+    Remainder, // %
     Concat,     // + (strings)
     Equal,      // =
     LessThan,   // <

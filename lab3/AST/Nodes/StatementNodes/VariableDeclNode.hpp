@@ -17,7 +17,7 @@ private:
     std::unique_ptr<ExprNode> initial_value_;
     std::unique_ptr<ExprNode> array_size_;
 public:
-    VariableDeclNode(DataType type, std::string name, bool isMutable, std::unique_ptr<ExprNode> initialValue, std::unique_ptr<ExprNode> arraySize)
+    VariableDeclNode(DataType type, std::string name, bool isMutable, std::unique_ptr<ExprNode> initialValue = nullptr, std::unique_ptr<ExprNode> arraySize = nullptr)
     : type_(type), name_(std::move(name)), is_mutable_(isMutable),
       initial_value_(std::move(initialValue)), array_size_(std::move(arraySize)) {}
 

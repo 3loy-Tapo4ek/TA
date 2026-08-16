@@ -1,0 +1,17 @@
+mutable integer steps := 0;
+mutable array of integer path[100];
+
+integer moveForward() start
+    top;
+    steps := steps + 1;
+    bind "checkpoint_1";
+    return steps;
+finish
+
+start
+    while (steps < 5) start
+        call moveForward with [];
+    finish instead start
+        timeshift "checkpoint_1";
+    finish
+finish
