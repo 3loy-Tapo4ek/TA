@@ -127,6 +127,9 @@ expression:
         CALL IDENTIFIER WITH OPENBRACKET expression_list CLOSEBRACKET {$$ = std::make_unique<CallNode>(std::move($2), "", std::move($5));}
         |
         CALL IDENTIFIER FOR IDENTIFIER WITH OPENBRACKET expression_list CLOSEBRACKET {$$ = std::make_unique<CallNode>(std::move($2), std::move($4), std::move($7));}
+        |
+        /* ASSIGN */
+        expression ASSIGN expression {$$ = std::make_unique<AssignNode>(std::move($1), std::move($3));}
         ;
 expression_list:
         %empty { $$ = std::vector<std::unique_ptr<ExprNode>>(); }
@@ -156,9 +159,8 @@ statement:
         declaration_statement { $$ = std::move($1); }
         |
         function_declaration { $$ = std::move($1); }
-        /* ASSIGN */
         |
-        expression ASSIGN expression SEMICOLON {$$ = std::make_unique<AssignNode>(std::move($1), std::move($3));}
+        expression SEMICOLON {$$ = std::make_unique<ExprStatementNode>(std::move($1));}
         /* WHILE */
         |
         WHILE OPENPAREN expression CLOSEPAREN statement %prec THEN {$$ = std::make_unique<WhileNode>(std::move($3), std::move($5), std::move(nullptr));}

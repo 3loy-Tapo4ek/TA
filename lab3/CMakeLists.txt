@@ -37,7 +37,7 @@ set(CORE_SOURCES
         AST/Nodes/ExpressionNodes/StringNode.hpp
         AST/Nodes/ExpressionNodes/UnaryOpNode.hpp
         AST/Nodes/ExpressionNodes/VariableNode.hpp
-        AST/Nodes/StatementNodes/AssignNode.hpp
+        AST/Nodes/ExpressionNodes/AssignNode.hpp
         AST/Nodes/StatementNodes/BlockNode.hpp
         AST/Nodes/StatementNodes/CheckZeroNode.hpp
         AST/Nodes/StatementNodes/FunctionDeclNode.hpp
@@ -45,10 +45,20 @@ set(CORE_SOURCES
         AST/Nodes/StatementNodes/RobotCommandNode.hpp
         AST/Nodes/StatementNodes/VariableDeclNode.hpp
         AST/Nodes/StatementNodes/WhileNode.hpp
+        AST/Nodes/StatementNodes/ExprStatementNode.hpp
         Interpreter/Value.hpp
         Interpreter/Environment.hpp
         Interpreter/Environment.cpp
+        Interpreter/RuntimeExceptions.hpp
+        Interpreter/Interpreter.hpp
+        Interpreter/Interpreter.cpp
         AST/Ast.hpp
+        Robot/IRobotController.hpp
+        Robot/ConsoleRobotController.hpp
+        Robot/ConsoleRobotController.cpp
+        Robot/Maze.cpp
+        Robot/Maze.hpp
+        Robot/Point.hpp
         ${BISON_MyParser_OUTPUTS}
         ${FLEX_MyLexer_OUTPUTS}
 )
@@ -64,6 +74,7 @@ set(INCLUDE_DIRS
         "${CMAKE_SOURCE_DIR}/Interpreter"
         "${CMAKE_CURRENT_SOURCE_DIR}/Parser"
         "${CMAKE_CURRENT_SOURCE_DIR}/Lexer"
+        "${CMAKE_CURRENT_SOURCE_DIR}/Robot"
 )
 
 add_executable(maze_game main.cpp ${CORE_SOURCES})

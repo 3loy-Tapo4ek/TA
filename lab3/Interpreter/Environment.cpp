@@ -52,3 +52,22 @@ Value Environment::get(const std::string& name) const
 {
     return resolve(name).value;
 };
+
+
+void Environment::defineFunction(const std::string& name, const FunctionDeclNode& decl, std::shared_ptr<Environment> closure)
+{
+    functions_.emplace(name, Function{decl, std::move(closure)});
+}
+
+const Function& Environment::resolveFunction(const std::string& name) const
+{
+    auto it = functions_.find(name);
+    if (it != functions_.end()) {
+        return it->second;
+    }
+    if (parent_) {
+        return parent_->resolveFunction(name);
+    }
+    throw RuntimeError("Функция '" + name + "' не найдена");
+}
+

@@ -14,9 +14,9 @@
 #include "StringNode.hpp"
 #include "UnaryOpNode.hpp"
 #include "VariableNode.hpp"
+#include "AssignNode.hpp"
 
 //statement nodes
-#include "AssignNode.hpp"
 #include "BlockNode.hpp"
 #include "CheckZeroNode.hpp"
 #include "FunctionDeclNode.hpp"
@@ -24,3 +24,4 @@
 #include "RobotCommandNode.hpp"
 #include "VariableDeclNode.hpp"
 #include "WhileNode.hpp"
+#include "ExprStatementNode.hpp"
