@@ -16,7 +16,4 @@ class StatementNode : public Node
 private:
 
 public:
-
-    void accept(INodeVisitor& visitor) const override { visitor.visit(*this); }
-
 };

@@ -46,5 +46,6 @@ public:
     //help funcs
     Variable& resolve(const std::string& name);
     const Variable& resolve(const std::string& name) const;
-
 };
+
+

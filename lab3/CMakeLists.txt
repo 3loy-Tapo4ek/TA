@@ -47,6 +47,7 @@ set(CORE_SOURCES
         AST/Nodes/StatementNodes/WhileNode.hpp
         AST/Nodes/StatementNodes/ExprStatementNode.hpp
         Interpreter/Value.hpp
+        Interpreter/ScopeGuard.hpp
         Interpreter/Environment.hpp
         Interpreter/Environment.cpp
         Interpreter/RuntimeExceptions.hpp
