@@ -31,9 +31,12 @@ STRING \"[^\"]*\"
     location.step();
 %}
 
-    /* handle whitespace and newlines */
+    /* handle whitespace and newlines and comms*/
 {WS} {location.step();}
 {NEWLINE} {location.lines(yyleng); location.step();}
+
+"//".*                      {}
+"/*"([^*]|\*+[^*/])*\*+"/"  {}
 
     /* handle TYPES and MODIFICATORS */
 "mutable" {return yy::parser::make_MUTABLE(location);}

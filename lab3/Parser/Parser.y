@@ -130,6 +130,19 @@ expression:
         |
         /* ASSIGN */
         expression ASSIGN expression {$$ = std::make_unique<AssignNode>(std::move($1), std::move($3));}
+        /* ROBOT COMMANDS */
+        |
+        TOP    { $$ = std::make_unique<RobotCommandNode>(RobotAction::Top); }
+        |
+        BOTTOM { $$ = std::make_unique<RobotCommandNode>(RobotAction::Bottom); }
+        |
+        LEFT   { $$ = std::make_unique<RobotCommandNode>(RobotAction::Left); }
+        |
+        RIGHT  { $$ = std::make_unique<RobotCommandNode>(RobotAction::Right); }
+        |
+        TIMESHIFT expression {$$ = std::make_unique<RobotCommandNode>(RobotAction::Timeshift, std::move($2));}
+        |
+        BIND expression {$$ = std::make_unique<RobotCommandNode>(RobotAction::Bind, std::move($2));}
         ;
 expression_list:
         %empty { $$ = std::vector<std::unique_ptr<ExprNode>>(); }
@@ -171,19 +184,6 @@ statement:
         CHECKZERO OPENPAREN expression CLOSEPAREN statement %prec THEN {$$ = std::make_unique<CheckZeroNode>(std::move($3), std::move($5), std::move(nullptr));}
         |
         CHECKZERO OPENPAREN expression CLOSEPAREN statement INSTEAD statement {$$ = std::make_unique<CheckZeroNode>(std::move($3), std::move($5), std::move($7));}
-        /* ROBOT COMMANDS */
-        |
-        TOP SEMICOLON {$$ = std::make_unique<RobotCommandNode>(RobotAction::Top);}
-        |
-        BOTTOM SEMICOLON {$$ = std::make_unique<RobotCommandNode>(RobotAction::Bottom);}
-        |
-        LEFT SEMICOLON {$$ = std::make_unique<RobotCommandNode>(RobotAction::Left);}
-        |
-        RIGHT SEMICOLON {$$ = std::make_unique<RobotCommandNode>(RobotAction::Right);}
-        |
-        TIMESHIFT expression SEMICOLON {$$ = std::make_unique<RobotCommandNode>(RobotAction::Timeshift, std::move($2));}
-        |
-        BIND expression SEMICOLON {$$ = std::make_unique<RobotCommandNode>(RobotAction::Bind, std::move($2));}
         /* RETURN from function */
         |
         RETURN expression SEMICOLON {$$ = std::make_unique<ReturnNode>(std::move($2));}

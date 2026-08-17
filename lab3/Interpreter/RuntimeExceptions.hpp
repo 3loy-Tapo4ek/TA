@@ -11,6 +11,7 @@ struct ReturnSignal
 };
 
 struct BreakSignal {};
+struct ExitReachedSignal {};
 
 class RuntimeError : public std::runtime_error
 {

@@ -14,7 +14,11 @@ void Interpreter::Execute(const StatementNode& statement)
 
 void Interpreter::Interpret(const StatementNode& root)
 {
-    Execute(root);
+    try
+    {
+        Execute(root);
+    }
+    catch (const ExitReachedSignal&) {}
 };
 
 Value Interpreter::makeBoolValue(bool condition)
@@ -257,6 +261,11 @@ void Interpreter::executeMove(Direction dir)
 {
     bool success = robot_.move(dir);
     last_evaluated_value_ = makeBoolValue(success);
+
+    if (robot_.isExitReached())
+    {
+        throw ExitReachedSignal{};
+    }
 };
 
 void Interpreter::executeTimeshift(const ExprNode* arg_node)

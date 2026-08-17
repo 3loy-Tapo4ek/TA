@@ -38,11 +38,11 @@ set(CORE_SOURCES
         AST/Nodes/ExpressionNodes/UnaryOpNode.hpp
         AST/Nodes/ExpressionNodes/VariableNode.hpp
         AST/Nodes/ExpressionNodes/AssignNode.hpp
+        AST/Nodes/ExpressionNodes/RobotCommandNode.hpp
         AST/Nodes/StatementNodes/BlockNode.hpp
         AST/Nodes/StatementNodes/CheckZeroNode.hpp
         AST/Nodes/StatementNodes/FunctionDeclNode.hpp
         AST/Nodes/StatementNodes/ReturnNode.hpp
-        AST/Nodes/StatementNodes/RobotCommandNode.hpp
         AST/Nodes/StatementNodes/VariableDeclNode.hpp
         AST/Nodes/StatementNodes/WhileNode.hpp
         AST/Nodes/StatementNodes/ExprStatementNode.hpp

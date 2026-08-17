@@ -7,12 +7,16 @@
 #include <unordered_map>
 #include <string>
 
-class ConsoleRobotController : public IRobotController {
+class ConsoleRobotController : public IRobotController
+{
 private:
     Maze maze_;
+
     Point current_pos_;
+
     std::vector<Point> history_;
     std::unordered_map<std::string, Point> bookmarks_;
+    
     int delay_ms_ = 120;
     bool exit_reached_ = false;
 
