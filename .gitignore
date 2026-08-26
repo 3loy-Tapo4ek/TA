@@ -1,9 +1,5 @@
 .vscode/
 build/
-*_sm.cpp
-*_sm.h
-*_sm.dot
-statemap.h
 *.dot
 *.png
 *.hh
