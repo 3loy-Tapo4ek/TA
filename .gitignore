@@ -4,3 +4,7 @@ build/
 *_sm.h
 *_sm.dot
 statemap.h
+*.dot
+*.png
+*.hh
+*.cc
